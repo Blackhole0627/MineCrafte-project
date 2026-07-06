@@ -1,0 +1,39 @@
+# ============================================================
+#  SeasonRPG Demo - configuracao
+#  Todos os valores sao ajustaveis sem recompilar o plugin.
+# ============================================================
+
+season:
+  # Numero da temporada exibido aos jogadores.
+  number: 1
+  # Duracao total da temporada em semanas (apenas exibicao/curva).
+  total-weeks: 8
+  # Duracao real de cada "semana" em MINUTOS.
+  # Para a demo usamos semanas curtas (10 min) para dar para ver a
+  # barra andar. Em producao seria 10080 (7 dias).
+  minutes-per-week: 10
+  objective: "Sobreviva e prepare-se para o chefe da Semana 8."
+
+lives:
+  # Vidas com que cada jogador comeca.
+  starting: 5
+  # Quando o jogador fica com este numero de vidas, dispara o
+  # anuncio de "ultima vida" (o momento streamavel).
+  last-life-threshold: 1
+  # O que acontece ao perder a ultima vida: SPECTATOR ou KICK.
+  on-eliminated: SPECTATOR
+
+classes:
+  # Cooldown das habilidades em segundos.
+  ability-cooldown-seconds: 12
+  # Permitir trocar de classe (1x na demo). Em producao: 1x/semana.
+  allow-switch: true
+
+event:
+  # Quantos zumbis surgem na invasao.
+  wave-size: 10
+  # Segundos de aviso antes do evento comecar.
+  warning-seconds: 30
+  # Se true, um evento comeca sozinho a cada auto-interval-minutes.
+  auto: false
+  auto-interval-minutes: 20

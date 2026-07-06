@@ -1,0 +1,31 @@
+name: SeasonRPGDemo
+version: "0.1.0"
+main: com.seasonrpg.demo.SeasonRPGPlugin
+api-version: "1.21"
+description: "Demo do nucleo de um servidor Survival RPG por temporadas."
+author: "Freelancer Demo"
+commands:
+  season:
+    description: "Mostra o estado da temporada atual."
+    usage: "/season"
+  class:
+    description: "Escolhe ou troca a sua classe."
+    usage: "/class"
+  ability:
+    description: "Usa a habilidade da sua classe (tambem: shift + clique direito)."
+    usage: "/ability"
+  lives:
+    description: "Mostra suas vidas restantes."
+    usage: "/lives"
+  event:
+    description: "Controla eventos dinamicos (admin)."
+    usage: "/event <start|stop>"
+    permission: seasonrpg.admin
+  seasonadmin:
+    description: "Comandos administrativos da temporada."
+    usage: "/seasonadmin <reset|setweek|givelife> ..."
+    permission: seasonrpg.admin
+permissions:
+  seasonrpg.admin:
+    description: "Acesso a comandos administrativos do demo."
+    default: op
