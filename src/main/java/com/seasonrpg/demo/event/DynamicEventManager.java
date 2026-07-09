@@ -116,6 +116,11 @@ public final class DynamicEventManager implements Listener {
     }
 
     private void spawnWave(Location center) {
+        // O spawn e' agendado apos o aviso; se o evento foi cancelado nesse meio
+        // tempo (ex.: /event stop), nao surge horda orfa.
+        if (!active) {
+            return;
+        }
         World world = center.getWorld();
         if (world == null) {
             finish(false);

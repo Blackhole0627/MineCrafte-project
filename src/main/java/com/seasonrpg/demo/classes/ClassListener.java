@@ -9,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -44,6 +45,8 @@ public final class ClassListener implements Listener {
         PlayerClass picked = matchIcon(event.getCurrentItem());
         if (picked == null) return;
 
+        // Guarda se e' a primeira escolha ANTES de trocar, para nao duplicar o kit.
+        boolean firstTime = !classes.hasClass(player.getUniqueId());
         boolean ok = classes.chooseClass(player.getUniqueId(), picked);
         player.closeInventory();
 
@@ -53,7 +56,10 @@ public final class ClassListener implements Listener {
             return;
         }
 
-        classes.giveStarterKit(player, picked);
+        // Kit inicial so na primeira escolha; trocar de classe nao duplica itens.
+        if (firstTime) {
+            classes.giveStarterKit(player, picked);
+        }
         player.sendMessage(Component.text("Voce agora e ", NamedTextColor.GRAY)
                 .append(Component.text(picked.displayName(), picked.color()))
                 .append(Component.text(". Habilidade: ", NamedTextColor.GRAY))
@@ -76,6 +82,9 @@ public final class ClassListener implements Listener {
                 && event.getAction() != Action.RIGHT_CLICK_BLOCK) {
             return;
         }
+        // O evento dispara para as duas maos; so tratamos a principal para nao
+        // acionar a habilidade duas vezes.
+        if (event.getHand() != EquipmentSlot.HAND) return;
         Player player = event.getPlayer();
         if (!player.isSneaking()) return;
         if (lives.isEliminated(player.getUniqueId())) return;

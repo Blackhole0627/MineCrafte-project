@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -39,6 +40,19 @@ public final class LivesListener implements Listener {
         p.sendMessage(Component.text("Voce tem ", NamedTextColor.GRAY)
                 .append(Component.text(remaining + " vida(s)", NamedTextColor.RED))
                 .append(Component.text(" nesta temporada.", NamedTextColor.GRAY)));
+    }
+
+    /**
+     * Aplica o modo espectador no respawn. Fazer isso na morte e' pouco
+     * confiavel (o jogador ainda esta na tela de morte); no respawn e' garantido.
+     */
+    @EventHandler
+    public void onRespawn(PlayerRespawnEvent event) {
+        Player p = event.getPlayer();
+        if (lives.isEliminated(p.getUniqueId())
+                && "SPECTATOR".equalsIgnoreCase(plugin.getConfig().getString("lives.on-eliminated", "SPECTATOR"))) {
+            p.setGameMode(GameMode.SPECTATOR);
+        }
     }
 
     @EventHandler
@@ -93,9 +107,7 @@ public final class LivesListener implements Listener {
             plugin.getServer().getScheduler().runTask(plugin, () ->
                     p.kick(Component.text("Voce perdeu sua ultima vida nesta temporada.",
                             NamedTextColor.RED)));
-        } else {
-            plugin.getServer().getScheduler().runTask(plugin, () ->
-                    p.setGameMode(GameMode.SPECTATOR));
         }
+        // Modo SPECTATOR e' aplicado em onRespawn (mais confiavel que na morte).
     }
 }
